@@ -5,7 +5,9 @@ const inert = require('inert');
 
 const config = require('./config');
 const service = require('./service');
-require('./config/mongo');
+// require('./config/mongo');
+
+
 
 const GameModel = require('./models/Game.model');
 
@@ -19,9 +21,9 @@ server.route([{
   method: 'GET',
   path: '/capture',
   handler: (req, h) => {
-    service.imageCapture();
+    const data = await service.nodeWebcam();
     const date = new Date();
-    const stream = fs.createReadStream('capture.jpeg');
+    const stream = fs.createReadStream(data);
     
     console.log(`${date.toString()} - Hit the point`);
     

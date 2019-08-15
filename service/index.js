@@ -7,12 +7,14 @@ const imageCapture = async () => {
 
 const nodeWebcam = async () => {
   const Webcam = await NodeWebcam.create();
-  return Webcam.capture( "capture", function( err, data ) {
-    console.log(err, data);
-  } );
+  return new Promise((resolve, reject) =>
+    Webcam.capture( "capture", ( err, data ) => 
+      err ? reject(err) : resolve(data)
+    )
+  );
 };
 
 module.exports = {
   imageCapture,
-
+  nodeWebcam
 };
