@@ -21,7 +21,7 @@ server.route([{
   handler: (req, h) => {
     service.imageCapture();
     const date = new Date();
-    const stream = fs.createReadStream('/tmp/capture.jpeg');
+    const stream = fs.createReadStream('capture.jpeg');
     
     console.log(`${date.toString()} - Hit the point`);
     
@@ -29,7 +29,7 @@ server.route([{
       .type('image/jpeg');
   }
 }, {
-  method: 'GET',
+  method: 'POST',
   path: '/game',
   handler: async (req, h) => {
     console.log('game');
