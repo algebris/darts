@@ -34,10 +34,14 @@ const shotController = async(req, h) => {
   
   const coords = _.get(req.payload, 'coords');
   const points = _.get(req.payload, 'points');
+  const multiplier = _.get(req.payload, 'multiplier');
+  const image = _.get(req.payload, 'image');
 
   game.shots.push({
     points,
     coords,
+    multiplier,
+    image
   });
   await game.save();
 

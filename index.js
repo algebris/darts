@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const hapi = require('hapi');
 const Inert = require('inert');
+const HapiSwagger = require('hapi-swagger');
 const hapiBoomDecorators = require('hapi-boom-decorators');
 
 const config = require('./config');

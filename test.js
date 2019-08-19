@@ -27,9 +27,11 @@ class Runner {
     return new Promise((resolve, reject) => {
       this.stdio = null;
       this.start();
+
       if(this.calibrated && this.child !== null) {
         return reject();
       }
+
       const timer = setInterval(() => {
         if(this.stdio) {
           this.calibrated = true;
