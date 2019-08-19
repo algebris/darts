@@ -1,16 +1,15 @@
+const _ = require('lodash');
 const fs = require('fs');
 
 const hapi = require('hapi');
-const inert = require('inert');
+const Inert = require('inert');
+const hapiBoomDecorators = require('hapi-boom-decorators');
 
 const config = require('./config');
 const service = require('./service');
-// require('./config/mongo');
-
-
+require('./config/mongo');
 
 const GameModel = require('./models/Game.model');
-
 
 const server = hapi.server({
   host: config.hostname,
@@ -20,7 +19,7 @@ const server = hapi.server({
 server.route([{
   method: 'GET',
   path: '/capture',
-  handler: (req, h) => {
+  handler: async (req, h) => {
     const data = await service.nodeWebcam();
     const date = new Date();
     const stream = fs.createReadStream(data);
@@ -33,16 +32,30 @@ server.route([{
 }, {
   method: 'POST',
   path: '/game',
-  handler: async (req, h) => {
-    console.log('game');
-    const game = new OrderModel({});
-    game = GameModel.save();
-    return game;
+  handler: service.startGame
+},
+{
+  method: 'POST',
+  path: '/game/end',
+  handler: service.finishGame
+},
+{
+  method: 'PUT',
+  path: '/shot',
+  config: {
+    handler: service.shotController,
+    payload: {
+      output: 'data',
+      parse:true
+    }
   }
 }]);
 
 const bootUpServer = async () => {
-    await server.register(inert);
+    await server.register([
+      Inert,
+      hapiBoomDecorators
+    ]);
     await server.start();
     console.log(`Server is running at ${server.info.uri}`)
 
