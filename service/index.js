@@ -28,7 +28,7 @@ const shotController = async(req, h) => {
     return h.notFound('Game record broken');
   }
 
-  if(!req.payload.points) {
+  if(!_.isNumber(req.payload.points)) {
     return h.badRequest('No points applied');
   }
   
